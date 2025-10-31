@@ -362,8 +362,6 @@ const AdminDashboard: React.FC = () => {
     },
   ];
 
-  const mobileQuickStats = isMobile ? quickStats.slice(0, 2) : quickStats;
-
   const navigation = [
     { id: 'overview', label: 'Overview', icon: LayoutDashboard, shortLabel: 'Overview' },
     { id: 'members', label: 'Members', icon: Users, shortLabel: 'Members' },
@@ -422,7 +420,7 @@ const AdminDashboard: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 safe-top safe-bottom">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+      <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50 mobile-navbar">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
           <div className="flex justify-between items-center h-16 sm:h-20">
             {isMobile ? (
@@ -500,8 +498,8 @@ const AdminDashboard: React.FC = () => {
             )}
           </div>
 
-          {/* Navigation Tabs */}
-          <div className={`flex space-x-1 pb-2 ${isMobile ? 'overflow-x-auto hide-scrollbar' : ''}`}>
+          {/* Navigation Tabs - Mobile Optimized with Horizontal Scroll */}
+          <div className={isMobile ? "mobile-nav-tabs" : "flex space-x-1 pb-2"}>
             {navigation.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -516,7 +514,7 @@ const AdminDashboard: React.FC = () => {
                     isActive
                       ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/25'
                       : 'bg-white text-gray-700 hover:text-blue-600 hover:shadow-md border border-gray-200'
-                  }`}
+                  } ${isMobile ? 'mobile-nav-tab' : ''}`}
                 >
                   <Icon className="h-4 w-4 mr-2" />
                   <span className={isMobile ? 'hidden sm:inline' : ''}>
@@ -572,14 +570,17 @@ const AdminDashboard: React.FC = () => {
       )}
 
       <main className="max-w-7xl mx-auto py-4 sm:py-8 px-3 sm:px-4 lg:px-8">
-        {/* Quick Stats Grid - Mobile Optimized */}
-        <div className={`grid gap-4 mb-6 ${
-          isMobile ? 'grid-cols-2' : 'grid-cols-2 lg:grid-cols-4'
-        }`}>
-          {mobileQuickStats.map((stat, index) => {
+        {/* Quick Stats Grid - Mobile Optimized with Horizontal Scroll */}
+        <div className={isMobile ? "horizontal-scroll mb-6" : "grid gap-4 mb-6 grid-cols-2 lg:grid-cols-4"}>
+          {quickStats.map((stat, index) => {
             const Icon = stat.icon;
             return (
-              <div key={index} className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 hover:shadow-md transition-all duration-200">
+              <div 
+                key={index} 
+                className={`bg-white rounded-xl shadow-sm border border-gray-200 p-4 hover:shadow-md transition-all duration-200 ${
+                  isMobile ? 'min-w-[280px]' : ''
+                }`}
+              >
                 <div className="flex items-center justify-between">
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-medium text-gray-600 truncate">{stat.label}</p>
@@ -812,7 +813,7 @@ const AdminDashboard: React.FC = () => {
                             </span>
                           </td>
                           <td className="px-4 py-3 whitespace-nowrap text-sm font-medium">
-                            <div className="flex space-x-1">
+                            <div className="flex space-x-1 action-buttons">
                               <button 
                                 onClick={() => handleEditMember(member)}
                                 className="text-blue-600 hover:text-blue-900 transition-colors p-2 rounded hover:bg-blue-50 min-h-[44px] min-w-[44px] flex items-center justify-center"
@@ -1123,7 +1124,7 @@ const AdminDashboard: React.FC = () => {
               </div>
             </div>
 
-            {/* Calendar Section */}
+            {/* Calendar Section - Mobile Optimized */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
               <div className="p-4 border-b border-gray-200">
                 <h3 className="text-lg font-semibold text-gray-900">Event Calendar</h3>
@@ -1138,7 +1139,9 @@ const AdminDashboard: React.FC = () => {
                     <p className="text-gray-600 text-sm">Loading calendar events...</p>
                   </div>
                 ) : (
-                  <EventCalendar events={allEvents} />
+                  <div className={isMobile ? "mobile-calendar" : ""}>
+                    <EventCalendar events={allEvents} isMobile={isMobile} />
+                  </div>
                 )}
               </div>
             </div>
@@ -1205,8 +1208,10 @@ const AdminDashboard: React.FC = () => {
             ) : (
               <>
                 {/* Key Metrics Grid */}
-                <div className={`grid gap-4 ${isMobile ? 'grid-cols-2' : 'grid-cols-2 lg:grid-cols-4'}`}>
-                  <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+                <div className={isMobile ? "horizontal-scroll mb-6" : "grid gap-4 mb-6 grid-cols-2 lg:grid-cols-4"}>
+                  <div className={`bg-white rounded-xl shadow-sm border border-gray-200 p-4 ${
+                    isMobile ? 'min-w-[200px]' : ''
+                  }`}>
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-xs font-medium text-gray-600">Avg Attendance</p>
@@ -1220,7 +1225,9 @@ const AdminDashboard: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+                  <div className={`bg-white rounded-xl shadow-sm border border-gray-200 p-4 ${
+                    isMobile ? 'min-w-[200px]' : ''
+                  }`}>
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-xs font-medium text-gray-600">Peak Attendance</p>
@@ -1234,7 +1241,9 @@ const AdminDashboard: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+                  <div className={`bg-white rounded-xl shadow-sm border border-gray-200 p-4 ${
+                    isMobile ? 'min-w-[200px]' : ''
+                  }`}>
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-xs font-medium text-gray-600">Member Growth</p>
@@ -1248,7 +1257,9 @@ const AdminDashboard: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+                  <div className={`bg-white rounded-xl shadow-sm border border-gray-200 p-4 ${
+                    isMobile ? 'min-w-[200px]' : ''
+                  }`}>
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="text-xs font-medium text-gray-600">Engagement</p>
@@ -1265,19 +1276,19 @@ const AdminDashboard: React.FC = () => {
 
                 {/* Charts Grid */}
                 <div className="grid grid-cols-1 gap-6">
-                  {/* Overall Attendance Trends Chart */}
+                  {/* Overall Attendance Trends Chart - Mobile Optimized */}
                   <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
                     <h4 className="text-base font-semibold text-gray-900 mb-3">Total Attendance Trends</h4>
-                    <div className="h-64">
+                    <div className={isMobile ? "chart-container-mobile" : "h-64"}>
                       <ResponsiveContainer width="100%" height="100%">
                         <LineChart 
                           data={analyticsData.attendanceTrends}
-                          margin={{ top: 5, right: 20, left: 0, bottom: 5 }}
+                          margin={{ top: 5, right: isMobile ? 10 : 20, left: isMobile ? -10 : 0, bottom: 5 }}
                         >
                           <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
                           <XAxis 
                             dataKey="date" 
-                            tick={{ fontSize: 10 }}
+                            tick={{ fontSize: isMobile ? 10 : 12 }}
                             tickFormatter={(value) => {
                               const date = new Date(value);
                               return timeRange === 'year' 
@@ -1288,7 +1299,7 @@ const AdminDashboard: React.FC = () => {
                             }}
                           />
                           <YAxis 
-                            tick={{ fontSize: 10 }}
+                            tick={{ fontSize: isMobile ? 10 : 12 }}
                           />
                           <Tooltip 
                             formatter={(value: number, name: string) => {
@@ -1303,8 +1314,8 @@ const AdminDashboard: React.FC = () => {
                             dataKey="attendance" 
                             stroke={CHART_COLORS.primary} 
                             strokeWidth={2}
-                            dot={{ fill: CHART_COLORS.primary, strokeWidth: 2, r: 2 }}
-                            activeDot={{ r: 4, fill: CHART_COLORS.primary }}
+                            dot={{ fill: CHART_COLORS.primary, strokeWidth: 2, r: isMobile ? 1 : 2 }}
+                            activeDot={{ r: isMobile ? 3 : 4, fill: CHART_COLORS.primary }}
                             name="Attendance Count"
                           />
                         </LineChart>

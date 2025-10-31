@@ -230,3 +230,149 @@ button {
   font-family: inherit;
   cursor: pointer;
 }
+
+/* Horizontal scrolling for cards */
+.horizontal-scroll {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  margin: 0 -1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.horizontal-scroll > * {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  min-width: 280px;
+}
+
+/* Hide scrollbar but keep functionality */
+.horizontal-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Mobile-optimized charts */
+.mobile-chart {
+  height: 300px !important;
+  min-height: 300px;
+}
+
+/* Calendar mobile optimizations */
+.mobile-calendar {
+  transform: scale(0.95);
+  transform-origin: top center;
+  margin: 0 -1rem;
+}
+
+.mobile-calendar .react-calendar {
+  width: 100% !important;
+  border: none !important;
+}
+
+/* Better table responsiveness */
+@media (max-width: 768px) {
+  .mobile-table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -1rem;
+    padding: 0 1rem;
+  }
+  
+  .mobile-table {
+    min-width: 600px;
+    font-size: 14px;
+  }
+  
+  /* Compact table cells */
+  .mobile-table td,
+  .mobile-table th {
+    padding: 0.5rem 0.25rem;
+  }
+  
+  /* Stack action buttons vertically on very small screens */
+  @media (max-width: 480px) {
+    .mobile-table .action-buttons {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    
+    .mobile-table .action-buttons button {
+      min-height: 36px;
+      min-width: 36px;
+    }
+  }
+}
+
+/* Enhanced navbar for mobile */
+.mobile-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.mobile-nav-tabs {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  margin: 0 -1rem;
+}
+
+.mobile-nav-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.mobile-nav-tab {
+  flex-shrink: 0;
+  min-height: 44px;
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Improved modal for mobile */
+@media (max-width: 768px) {
+  .mobile-modal {
+    margin: 0 !important;
+    border-radius: 0 !important;
+    min-height: 100vh;
+    min-height: 100dvh;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  .mobile-modal-content {
+    padding: 1rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+  }
+}
+
+/* Chart container mobile optimizations */
+.chart-container-mobile {
+  height: 250px;
+  margin: 0 -1rem;
+  padding: 0 1rem;
+}
+
+/* Calendar event dots mobile optimization */
+.mobile-event-dot {
+  width: 6px;
+  height: 6px;
+  margin: 1px;
+}

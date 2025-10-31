@@ -1,4 +1,3 @@
-// Calendar.tsx - Updated version
 import React, { useState, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Download, Users, Clock, Loader, Eye } from 'lucide-react';
 import type { Event } from '../services/eventService';
@@ -7,6 +6,7 @@ import { memberService } from '../services/memberService';
 
 interface CalendarProps {
   events: Event[];
+  isMobile?: boolean;
 }
 
 interface EventDetailsModalProps {
@@ -15,6 +15,7 @@ interface EventDetailsModalProps {
   onClose: () => void;
   onExportAttendance: (event: Event, format: 'csv' | 'pdf') => void;
   exportLoading: boolean;
+  isMobile?: boolean;
 }
 
 const EventDetailsModal: React.FC<EventDetailsModalProps> = ({ 
@@ -22,7 +23,8 @@ const EventDetailsModal: React.FC<EventDetailsModalProps> = ({
   isOpen, 
   onClose, 
   onExportAttendance, 
-  exportLoading 
+  exportLoading,
+  isMobile = false
 }) => {
   if (!isOpen || !event) return null;
 
@@ -38,7 +40,9 @@ const EventDetailsModal: React.FC<EventDetailsModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-2xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+      <div className={`bg-white rounded-2xl shadow-xl w-full ${
+        isMobile ? 'mobile-modal max-h-[90vh]' : 'max-w-md'
+      } overflow-y-auto`}>
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <div className="flex items-center space-x-3">
@@ -58,7 +62,7 @@ const EventDetailsModal: React.FC<EventDetailsModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-xl transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
           >
             <span className="text-2xl text-gray-500">×</span>
           </button>
@@ -117,11 +121,11 @@ const EventDetailsModal: React.FC<EventDetailsModalProps> = ({
               <p className="text-sm text-green-700 mb-3">
                 Download the complete attendance report for this event.
               </p>
-              <div className="grid grid-cols-2 gap-2">
+              <div className={`grid ${isMobile ? 'grid-cols-1 gap-3' : 'grid-cols-2 gap-2'}`}>
                 <button
                   onClick={() => onExportAttendance(event, 'csv')}
                   disabled={exportLoading}
-                  className="bg-green-600 text-white px-4 py-3 rounded-xl hover:bg-green-700 transition-colors flex items-center justify-center font-medium disabled:opacity-50"
+                  className="bg-green-600 text-white px-4 py-3 rounded-xl hover:bg-green-700 transition-colors flex items-center justify-center font-medium disabled:opacity-50 min-h-[44px]"
                 >
                   {exportLoading ? (
                     <Loader className="h-4 w-4 mr-2 animate-spin" />
@@ -133,7 +137,7 @@ const EventDetailsModal: React.FC<EventDetailsModalProps> = ({
                 <button
                   onClick={() => onExportAttendance(event, 'pdf')}
                   disabled={exportLoading}
-                  className="bg-red-600 text-white px-4 py-3 rounded-xl hover:bg-red-700 transition-colors flex items-center justify-center font-medium disabled:opacity-50"
+                  className="bg-red-600 text-white px-4 py-3 rounded-xl hover:bg-red-700 transition-colors flex items-center justify-center font-medium disabled:opacity-50 min-h-[44px]"
                 >
                   {exportLoading ? (
                     <Loader className="h-4 w-4 mr-2 animate-spin" />
@@ -163,7 +167,7 @@ const EventDetailsModal: React.FC<EventDetailsModalProps> = ({
         <div className="flex space-x-3 p-6 border-t border-gray-200">
           <button
             onClick={onClose}
-            className="flex-1 bg-gray-600 text-white px-4 py-3 rounded-xl hover:bg-gray-700 transition-colors font-medium"
+            className="flex-1 bg-gray-600 text-white px-4 py-3 rounded-xl hover:bg-gray-700 transition-colors font-medium min-h-[44px]"
           >
             Close
           </button>
@@ -173,7 +177,7 @@ const EventDetailsModal: React.FC<EventDetailsModalProps> = ({
   );
 };
 
-const Calendar: React.FC<CalendarProps> = ({ events }) => {
+const Calendar: React.FC<CalendarProps> = ({ events, isMobile = false }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -319,42 +323,50 @@ const Calendar: React.FC<CalendarProps> = ({ events }) => {
 
   return (
     <>
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-        {/* Calendar Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+      <div className={`bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden ${
+        isMobile ? 'text-sm' : ''
+      }`}>
+        {/* Calendar Header - Mobile Optimized */}
+        <div className={`flex items-center justify-between ${
+          isMobile ? 'p-4' : 'p-6'
+        } border-b border-gray-200`}>
           <div className="flex items-center space-x-3">
-            <CalendarIcon className="h-6 w-6 text-blue-600" />
-            <h3 className="text-lg font-semibold text-gray-900">{monthYear}</h3>
+            <CalendarIcon className={`${isMobile ? 'h-5 w-5' : 'h-6 w-6'} text-blue-600`} />
+            <h3 className={`${isMobile ? 'text-base' : 'text-lg'} font-semibold text-gray-900`}>
+              {monthYear}
+            </h3>
           </div>
           <div className="flex space-x-2">
             <button
               onClick={() => navigateMonth('prev')}
-              className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+              className="p-2 hover:bg-gray-100 rounded-xl transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
             >
-              <ChevronLeft className="h-5 w-5 text-gray-600" />
+              <ChevronLeft className="h-4 w-4 text-gray-600" />
             </button>
             <button
               onClick={() => setCurrentDate(new Date())}
-              className="px-4 py-2 text-sm bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium"
+              className="px-3 py-2 text-sm bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium min-h-[44px]"
             >
               Today
             </button>
             <button
               onClick={() => navigateMonth('next')}
-              className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+              className="p-2 hover:bg-gray-100 rounded-xl transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
             >
-              <ChevronRight className="h-5 w-5 text-gray-600" />
+              <ChevronRight className="h-4 w-4 text-gray-600" />
             </button>
           </div>
         </div>
 
         {/* Calendar Grid */}
-        <div className="p-6">
+        <div className={isMobile ? 'p-2' : 'p-6'}>
           {/* Day Headers */}
-          <div className="grid grid-cols-7 gap-1 mb-4">
+          <div className="grid grid-cols-7 gap-1 mb-2">
             {dayNames.map(day => (
-              <div key={day} className="text-center text-sm font-medium text-gray-500 py-2">
-                {day}
+              <div key={day} className={`text-center font-medium text-gray-500 py-2 ${
+                isMobile ? 'text-xs' : 'text-sm'
+              }`}>
+                {isMobile ? day.charAt(0) : day}
               </div>
             ))}
           </div>
@@ -364,17 +376,17 @@ const Calendar: React.FC<CalendarProps> = ({ events }) => {
             {calendarDays.map((day, index) => (
               <div
                 key={index}
-                className={`min-h-24 p-2 border border-gray-200 rounded-xl ${
+                className={`min-h-16 p-1 border border-gray-200 rounded-lg ${
                   day.isCurrentMonth ? 'bg-white' : 'bg-gray-50'
                 } ${day.isToday ? 'ring-2 ring-blue-500 ring-inset' : ''} ${
                   day.date.getTime() < new Date().setHours(0,0,0,0) ? 'opacity-90' : ''
-                }`}
+                } ${isMobile ? 'text-xs' : ''}`}
               >
                 <div className="flex justify-between items-start mb-1">
                   <span
-                    className={`text-sm font-medium ${
+                    className={`font-medium ${
                       day.isToday
-                        ? 'bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center'
+                        ? 'bg-blue-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs'
                         : day.isCurrentMonth
                         ? day.date.getTime() < new Date().setHours(0,0,0,0)
                           ? 'text-gray-600' 
@@ -384,37 +396,26 @@ const Calendar: React.FC<CalendarProps> = ({ events }) => {
                   >
                     {day.date.getDate()}
                   </span>
-                  {!day.isCurrentMonth && (
-                    <span className="text-xs text-gray-400">
-                      {day.date.toLocaleDateString('en-US', { month: 'short' })}
-                    </span>
-                  )}
                 </div>
 
-                {/* Events */}
-                <div className="space-y-1 max-h-20 overflow-y-auto">
+                {/* Events - Mobile Optimized */}
+                <div className="space-y-0.5 max-h-12 overflow-y-auto">
                   {day.events.map(event => {
                     const isPastEvent = new Date(event.date) < new Date();
                     return (
                       <button
                         key={event.eventId}
                         onClick={() => handleEventClick(event)}
-                        className={`w-full text-left text-xs p-1 rounded transition-colors ${
+                        className={`w-full text-left p-0.5 rounded transition-colors ${
                           isPastEvent
                             ? 'bg-green-100 text-green-800 hover:bg-green-200 border border-green-200'
                             : event.eventType === 'sunday_service'
                             ? 'bg-blue-100 text-blue-800 hover:bg-blue-200'
                             : 'bg-purple-100 text-purple-800 hover:bg-purple-200'
-                        }`}
+                        } ${isMobile ? 'text-[10px]' : 'text-xs'}`}
                       >
-                        <div className="font-medium truncate">{event.name}</div>
-                        <div className="flex justify-between text-xs opacity-75">
-                          <span>
-                            {event.eventType === 'sunday_service' ? 'Service' : 'Event'}
-                          </span>
-                          {isPastEvent && (
-                            <span className="font-medium">Report</span>
-                          )}
+                        <div className="font-medium truncate">
+                          {isMobile ? event.name.split(' ')[0] : event.name}
                         </div>
                       </button>
                     );
@@ -425,20 +426,20 @@ const Calendar: React.FC<CalendarProps> = ({ events }) => {
           </div>
         </div>
 
-        {/* Legend */}
-        <div className="p-4 border-t border-gray-200 bg-gray-50">
-          <div className="flex flex-wrap gap-4 text-xs">
-            <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-green-100 border border-green-300 rounded"></div>
-              <span className="text-gray-600">Past Events (Reports Available)</span>
+        {/* Legend - Mobile Optimized */}
+        <div className="p-3 border-t border-gray-200 bg-gray-50">
+          <div className={`flex flex-wrap gap-2 ${isMobile ? 'text-[10px]' : 'text-xs'}`}>
+            <div className="flex items-center space-x-1">
+              <div className="w-2 h-2 bg-green-100 border border-green-300 rounded"></div>
+              <span className="text-gray-600">Past Events</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-blue-100 border border-blue-300 rounded"></div>
-              <span className="text-gray-600">Sunday Services</span>
+            <div className="flex items-center space-x-1">
+              <div className="w-2 h-2 bg-blue-100 border border-blue-300 rounded"></div>
+              <span className="text-gray-600">Services</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-purple-100 border border-purple-300 rounded"></div>
-              <span className="text-gray-600">Custom Events</span>
+            <div className="flex items-center space-x-1">
+              <div className="w-2 h-2 bg-purple-100 border border-purple-300 rounded"></div>
+              <span className="text-gray-600">Custom</span>
             </div>
           </div>
         </div>
@@ -451,6 +452,7 @@ const Calendar: React.FC<CalendarProps> = ({ events }) => {
         onClose={handleCloseModal}
         onExportAttendance={handleExportAttendance}
         exportLoading={exportLoading}
+        isMobile={isMobile}
       />
     </>
   );
