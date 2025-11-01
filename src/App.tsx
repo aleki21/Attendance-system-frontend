@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
-import AdminDashboard from './components/dashboards/AdminDashboard';
+import AdminDashboard from './components/admin/AdminDashboard'; // Updated import path
 import UsherDashboard from './components/dashboards/UsherDashboard';
 import PWAInstallPrompt from './components/PWAInstallPrompt';
-import { Loader, Smartphone } from 'lucide-react'; // Added Smartphone import
+import { Loader, Smartphone } from 'lucide-react';
 
 type AuthMode = 'login' | 'register';
 
@@ -54,8 +54,11 @@ const AppContent: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <Loader className="animate-spin h-8 w-8 text-teal-600" />
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 safe-top safe-bottom">
+        <div className="text-center">
+          <Loader className="animate-spin h-8 w-8 text-teal-600 mx-auto mb-4" />
+          <p className="text-gray-600">Loading...</p>
+        </div>
       </div>
     );
   }

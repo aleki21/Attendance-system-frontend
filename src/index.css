@@ -132,6 +132,108 @@ a {
   min-height: 100dvh;
 }
 
+/* Mobile Navigation Scroll */
+.nav-scroll-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.nav-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Horizontal scrolling cards */
+.horizontal-scroll {
+  display: flex;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  margin: 0 -1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.horizontal-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.horizontal-scroll-item {
+  flex: 0 0 auto;
+  width: 280px;
+}
+
+/* Mobile-optimized charts */
+.mobile-chart-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 -1rem;
+  padding: 0 1rem;
+}
+
+.mobile-chart {
+  min-width: 600px;
+}
+
+/* Calendar mobile optimizations */
+.mobile-calendar {
+  transform: scale(0.95);
+  transform-origin: top left;
+  width: 105%;
+}
+
+.mobile-calendar-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 -1rem;
+  padding: 0 1rem;
+}
+
+@media (max-width: 768px) {
+  .mobile-calendar {
+    transform: scale(0.85);
+    width: 118%;
+    min-width: 700px;
+  }
+  
+  .mobile-calendar-grid {
+    font-size: 0.75rem;
+  }
+}
+
+/* Better table responsiveness */
+.mobile-table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 -1rem;
+  padding: 0 1rem;
+}
+
+.mobile-table {
+  min-width: 600px;
+}
+
+/* Card grid improvements */
+@media (max-width: 768px) {
+  .mobile-card-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0.75rem;
+  }
+  
+  .mobile-stack {
+    flex-direction: column;
+  }
+  
+  .mobile-full-width {
+    width: 100%;
+  }
+}
+
 /* Improved table responsiveness */
 @media (max-width: 768px) {
   .mobile-table-container {
@@ -231,148 +333,199 @@ button {
   cursor: pointer;
 }
 
-/* Horizontal scrolling for cards */
-.horizontal-scroll {
-  display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  gap: 1rem;
-  padding: 0.5rem 0;
-  margin: 0 -1rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
+/* Chart tooltip improvements for mobile */
+.recharts-tooltip-wrapper {
+  z-index: 1000;
 }
 
-.horizontal-scroll > * {
-  flex: 0 0 auto;
-  scroll-snap-align: start;
-  min-width: 280px;
+/* Ensure proper z-index for modals */
+.modal-overlay {
+  z-index: 9999;
 }
 
-/* Hide scrollbar but keep functionality */
-.horizontal-scroll {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.horizontal-scroll::-webkit-scrollbar {
-  display: none;
-}
-
-/* Mobile-optimized charts */
-.mobile-chart {
-  height: 300px !important;
-  min-height: 300px;
-}
-
-/* Calendar mobile optimizations */
-.mobile-calendar {
-  transform: scale(0.95);
-  transform-origin: top center;
-  margin: 0 -1rem;
-}
-
-.mobile-calendar .react-calendar {
-  width: 100% !important;
-  border: none !important;
-}
-
-/* Better table responsiveness */
+/* Enhanced mobile optimizations */
 @media (max-width: 768px) {
-  .mobile-table-container {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    margin: 0 -1rem;
-    padding: 0 1rem;
+  /* Improved spacing for mobile */
+  .mobile-padding {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
   
-  .mobile-table {
-    min-width: 600px;
-    font-size: 14px;
+  /* Better grid layouts for mobile */
+  .mobile-grid-1 {
+    grid-template-columns: 1fr;
   }
   
-  /* Compact table cells */
-  .mobile-table td,
-  .mobile-table th {
-    padding: 0.5rem 0.25rem;
+  .mobile-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
   }
   
-  /* Stack action buttons vertically on very small screens */
-  @media (max-width: 480px) {
-    .mobile-table .action-buttons {
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-    
-    .mobile-table .action-buttons button {
-      min-height: 36px;
-      min-width: 36px;
-    }
-  }
-}
-
-/* Enhanced navbar for mobile */
-.mobile-navbar {
-  position: sticky;
-  top: 0;
-  z-index: 40;
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.mobile-nav-tabs {
-  display: flex;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  margin: 0 -1rem;
-}
-
-.mobile-nav-tabs::-webkit-scrollbar {
-  display: none;
-}
-
-.mobile-nav-tab {
-  flex-shrink: 0;
-  min-height: 44px;
-  padding: 0.5rem 1rem;
-  border-radius: 0.75rem;
-  font-size: 14px;
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-/* Improved modal for mobile */
-@media (max-width: 768px) {
-  .mobile-modal {
-    margin: 0 !important;
-    border-radius: 0 !important;
-    min-height: 100vh;
-    min-height: 100dvh;
-    width: 100% !important;
-    max-width: 100% !important;
+  /* Improved button groups */
+  .mobile-button-group {
+    flex-direction: column;
+    gap: 0.5rem;
   }
   
-  .mobile-modal-content {
+  .mobile-button-group button {
+    width: 100%;
+  }
+  
+  /* Better form layouts */
+  .mobile-form-stack {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  /* Improved card layouts */
+  .mobile-card {
     padding: 1rem;
-    max-height: calc(100vh - 2rem);
-    overflow-y: auto;
+    margin: 0.5rem 0;
+  }
+  
+  /* Better text hierarchy */
+  .mobile-heading-1 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+  
+  .mobile-heading-2 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+  
+  .mobile-heading-3 {
+    font-size: 1.125rem;
+    line-height: 1.5rem;
   }
 }
 
-/* Chart container mobile optimizations */
-.chart-container-mobile {
-  height: 250px;
-  margin: 0 -1rem;
-  padding: 0 1rem;
+/* Smooth transitions for better UX */
+.smooth-transition {
+  transition: all 0.2s ease-in-out;
 }
 
-/* Calendar event dots mobile optimization */
-.mobile-event-dot {
-  width: 6px;
-  height: 6px;
-  margin: 1px;
+/* Focus states for accessibility */
+.focus-ring:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* Improved hover states for touch devices */
+@media (hover: hover) {
+  .hover-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+}
+
+/* Loading animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Custom scroll snap for horizontal lists */
+.horizontal-snap {
+  scroll-snap-type: x mandatory;
+  scroll-padding: 0 1rem;
+}
+
+.horizontal-snap > * {
+  scroll-snap-align: start;
+}
+
+/* Improved form styles */
+.form-input {
+  @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900;
+}
+
+.form-select {
+  @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900;
+}
+
+.form-label {
+  @apply block text-sm font-medium text-gray-700 mb-1;
+}
+
+/* Button variants */
+.btn-primary {
+  @apply bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200 min-h-[44px] flex items-center justify-center font-medium;
+}
+
+.btn-secondary {
+  @apply bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors duration-200 min-h-[44px] flex items-center justify-center font-medium;
+}
+
+.btn-danger {
+  @apply bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors duration-200 min-h-[44px] flex items-center justify-center font-medium;
+}
+
+/* Card styles */
+.card {
+  @apply bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden;
+}
+
+.card-header {
+  @apply p-4 border-b border-gray-200;
+}
+
+.card-body {
+  @apply p-4;
+}
+
+/* Utility classes for mobile optimization */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.no-tap-highlight {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ios-scroll {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Dark mode support (if needed) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
+  }
+  
+  body {
+    background-color: #242424;
+    color: rgba(255, 255, 255, 0.87);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .card {
+    border-width: 2px;
+  }
+  
+  button {
+    border: 1px solid;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
